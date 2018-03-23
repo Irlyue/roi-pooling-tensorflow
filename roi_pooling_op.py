@@ -11,7 +11,8 @@ def roi_pooling(inp, rois, pool_height=2, pool_width=2, return_indices=False):
     """
     The python wrapper for Roi-Pooling TensorFlow operation.
 
-    :param inp: tf.Tensor, with shape like(batch_size, height, width, n_channels) and tf.float32 data type.
+    :param inp: tf.Tensor, input feature maps with shape like(batch_size, height, width, n_channels)
+    and tf.float32 data type.
     :param rois: tf.Tensor, with shape like(batch_size, 5) and tf.int32 data type,
     giving (batch_index, top, left, bottom, right) of one RoI(Region of Interest).
     :param pool_height: int, the output height of Roi-Pooling layer

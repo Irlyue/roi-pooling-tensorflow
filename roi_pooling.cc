@@ -1,4 +1,3 @@
-#include<iostream>
 #include "tensorflow/core/framework/op.h"
 #include "tensorflow/core/framework/op_kernel.h"
 #include "tensorflow/core/framework/shape_inference.h"
@@ -90,7 +89,6 @@ class RoiPoolingOp: public OpKernel{
         }
 };
 
-#define Dtype float
 
 void RoiPoolingKernelLauncher(const float* input,
                               const int* rois,
@@ -137,6 +135,10 @@ void RoiPoolingKernelLauncher(const float* input,
 
         float maxval = is_empty ? 0: -99999999.0;
         int maxidx = -1;
+
+        // loop over the (hstart, wstart, hend, wend) sub-window
+        // record the maximum value and the related index
+        // the max pooling can be easily replace with other strategy(say average pooling)
         for(int idx_h = hstart; idx_h < hend; idx_h++){
             for(int idx_w = wstart; idx_w < wend; idx_w++){
                 int input_idx = tuple_to_one(roi_batch_idx, idx_h, idx_w, c, 0, height, width, n_channels);
@@ -146,8 +148,6 @@ void RoiPoolingKernelLauncher(const float* input,
                 }
             }
         }
-        cout<<"************************************"<<endl;
-        cout<<hstart<<hend<<wstart<<wend<<maxidx<<endl;
         output[i] = maxval;
         indices[i] = maxidx;
     }
