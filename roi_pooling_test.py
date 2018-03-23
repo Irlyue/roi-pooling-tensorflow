@@ -51,6 +51,27 @@ class RoiPoolingTest(tf.test.TestCase):
             out = sess.run(roi_pooling(input_value, rois_value, 2, 2))
             self.assertAllEqual(out, result)
 
+    def test_forward_pass_2(self):
+        # 3*3 feature map with only 1 channel
+        input_value = [[
+            [[1], [2], [3]],
+            [[7], [8], [6]],
+            [[4], [5], [9]]
+        ]]
+        input_value = np.asarray(input_value, dtype='float32')
+        rois_value = [
+            [0, 0, 0, 2, 2],
+        ]
+        rois_value = np.asarray(rois_value, dtype='int32')
+        result = [
+            [[[8.], [8.]],
+             [[8.], [9.]]],
+        ]
+        result = np.asarray(result, dtype='float32')
+        with tf.Session('') as sess:
+            out = sess.run(roi_pooling(input_value, rois_value, 2, 2))
+            self.assertAllEqual(out, result)
+
 
 if __name__ == '__main__':
     tf.test.main()
